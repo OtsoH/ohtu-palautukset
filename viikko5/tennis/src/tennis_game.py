@@ -7,49 +7,54 @@ class TennisGame:
 
     def won_point(self, player_name):
         if player_name == "player1":
-            self.player1_score = self.player1_score + 1
+            self.player1_score += 1
         else:
-            self.player2_score = self.player2_score + 1
+            self.player2_score += 1
+
+    def _get_score_name(self, points):
+        """Muuntaa pistemäärän tennisterminologiaksi"""
+        score_names = {
+            0: "Love",
+            1: "Fifteen",
+            2: "Thirty",
+            3: "Forty"
+        }
+        return score_names[points]
 
     def get_score(self):
-        score = ""
-        temp_score = 0
-
         if self.player1_score == self.player2_score:
-            if self.player1_score == 0:
-                score = "Love-All"
-            elif self.player1_score == 1:
-                score = "Fifteen-All"
-            elif self.player1_score == 2:
-                score = "Thirty-All"
-            else:
-                score = "Deuce"
+            return self._get_tied_score()
         elif self.player1_score >= 4 or self.player2_score >= 4:
-            minus_result = self.player1_score - self.player2_score
-
-            if minus_result == 1:
-                score = "Advantage player1"
-            elif minus_result == -1:
-                score = "Advantage player2"
-            elif minus_result >= 2:
-                score = "Win for player1"
-            else:
-                score = "Win for player2"
+            return self._get_endgame_score()
         else:
-            for i in range(1, 3):
-                if i == 1:
-                    temp_score = self.player1_score
-                else:
-                    score = score + "-"
-                    temp_score = self.player2_score
+            return self._get_regular_score()
 
-                if temp_score == 0:
-                    score = score + "Love"
-                elif temp_score == 1:
-                    score = score + "Fifteen"
-                elif temp_score == 2:
-                    score = score + "Thirty"
-                elif temp_score == 3:
-                    score = score + "Forty"
+    def _get_tied_score(self):
+        """Palauttaa tuloksen kun pisteet ovat tasan"""
+        if self.player1_score == 0:
+            return "Love-All"
+        elif self.player1_score == 1:
+            return "Fifteen-All"
+        elif self.player1_score == 2:
+            return "Thirty-All"
+        else:
+            return "Deuce"
 
-        return score
+    def _get_endgame_score(self):
+        """Palauttaa tuloksen advantage/win -tilanteessa"""
+        score_difference = self.player1_score - self.player2_score
+
+        if score_difference == 1:
+            return "Advantage player1"
+        elif score_difference == -1:
+            return "Advantage player2"
+        elif score_difference >= 2:
+            return "Win for player1"
+        else:
+            return "Win for player2"
+
+    def _get_regular_score(self):
+        """Palauttaa normaalin pisteilyn tuloksen"""
+        player1_score_text = self._get_score_name(self.player1_score)
+        player2_score_text = self._get_score_name(self.player2_score)
+        return f"{player1_score_text}-{player2_score_text}"
