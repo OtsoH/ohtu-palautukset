@@ -52,11 +52,10 @@ class Nollaus(Komento):
 
 class Kumoa(Komento):
     def __init__(self, sovelluslogiikka, lue_arvo):
-        self._sovelluslogiikka = sovelluslogiikka
-        self._lue_arvo = lue_arvo
+        pass
 
     def suorita(self):
-        pass  # Toteutetaan myöhemmin
+        pass
 
     def kumoa(self):
         pass
